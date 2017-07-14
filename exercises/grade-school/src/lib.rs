@@ -1,19 +1,22 @@
-#[allow(unused_variables)]
+use std::collections::BTreeMap;
 
 pub struct School {
+    roster: BTreeMap<u32, Vec<String>>,
 }
 
 impl School {
     pub fn new() -> School {
-        unimplemented!()
+        School { roster: BTreeMap::new() }
     }
 
     pub fn add(&mut self, grade: u32, student: &str) {
-        unimplemented!()
+        self.roster.entry(grade).or_insert(Vec::new()).push(
+            student.to_string(),
+        );
     }
 
     pub fn grades(&self) -> Vec<u32> {
-        unimplemented!()
+        self.roster.keys().cloned().collect()
     }
 
     // If grade returned an `Option<&Vec<String>>`,
@@ -21,6 +24,10 @@ impl School {
     // By returning an owned vector instead,
     // the internal implementation is free to use whatever it chooses.
     pub fn grade(&self, grade: u32) -> Option<Vec<String>> {
-        unimplemented!()
+        let mut x = self.roster.get(&grade).cloned();
+        for v in x.as_mut() {
+            v.sort();
+        }
+        x
     }
 }

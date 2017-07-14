@@ -29,7 +29,20 @@
 ///  * Never output leading 0 digits. However, your function must be able to
 ///     process input with leading 0 digits.
 ///
-#[allow(unused_variables)]
 pub fn convert(number: &[u32], from_base: u32, to_base: u32) -> Result<Vec<u32>, ()> {
-    unimplemented!()
+    if from_base < 2 || to_base < 2 || number.iter().any(|&n| n >= from_base) {
+        return Err(());
+    }
+    if number.is_empty() {
+        return Ok(vec![]);
+    }
+    let mut x = number.iter().fold(0, |acc, &n| acc * from_base + n);
+    let mut r: Vec<u32> =  vec!();
+    while x > 0 {
+        r.push(x % to_base);
+        x = x / to_base;
+    }
+    r.reverse();
+    Ok(r)
 }
+
